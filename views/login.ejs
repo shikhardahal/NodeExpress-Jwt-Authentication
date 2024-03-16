@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- head content -->
+</head>
+<body>
+  <!-- Your HTML content -->
+  <form id="loginForm" style="max-width: 300px; margin: 0 auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+      <h2 style="text-align: center;">Login</h2>
+      <div style="margin-bottom: 15px;">
+          <label for="loginEmail">Email</label>
+          <input type="text" id="loginEmail" style="width: 100%; padding: 8px; box-sizing: border-box;" />
+          <div class="error" id="loginError" style="color: red; margin-top: 5px;"></div>
+      </div>
+      <div style="margin-bottom: 15px;">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" style="width: 100%; padding: 8px; box-sizing: border-box;" />
+          <div class="error" id="loginPasswordError" style="color: red; margin-top: 5px;"></div>
+      </div>
+      <button type="button" onclick="handleLogin()" style="background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 3px; cursor: pointer;">Login</button>
+  </form>
+  <script>
+      // Function to handle login
+      const handleLogin = async () => {
+          const email = document.getElementById('loginEmail').value;
+          const password = document.getElementById('loginPassword').value;
+          try {
+              const response = await fetch('/login', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  credentials: 'include',
+                  body: JSON.stringify({ email, password }),
+              });
+        console.log('rrr', response )
+              if (response.ok) {
+                  console.log('Redirecting to /dashboard');
+                  window.location.href = '/dashboard';
+              } else {
+                  const data = await response.json();
+                  document.getElementById('loginError').textContent = data.message || 'Login failed';
+              }
+          } catch (error) {
+              console.error('Login Error:', error.message);
+          }
+      };
+  </script>
+</body>
+</html>
